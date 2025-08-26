@@ -2,7 +2,7 @@ import copy as cp
 import numpy as np
 from tqdm import tqdm
 from animation import animate
-from particlefilter import observLikelihood, Particle
+from particlefilter import likelihood, Particle
 
 # Settings
 numSteps = 100
@@ -30,7 +30,7 @@ for time in tqdm(range(numSteps)):
     for idx in range(numParticles):  
         pctsHistory[time,idx,:] = np.array([ptcs[idx].x1, ptcs[idx].x2])
         ptcs[idx].sample(rng) # Sample
-        condProb = observLikelihood(obsHistory[time],ptcs[idx],rng) # p(yt|xt)
+        condProb = likelihood(obsHistory[time],ptcs[idx],rng) # p(yt|xt)
         weights[idx] = ptcs[idx].weight*condProb # Update weights
     weights /= np.sum(weights) # Normalize
     for idx in range(numParticles):
